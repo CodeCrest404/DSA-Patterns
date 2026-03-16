@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DSA Pattern Atlas</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg-soft: #121933;
+      --panel: rgba(255,255,255,0.08);
+      --panel-strong: rgba(255,255,255,0.12);
+      --text: #eef2ff;
+      --muted: #b7c0e0;
+      --accent: #8b5cf6;
+      --accent-2: #22d3ee;
+      --accent-3: #f59e0b;
+      --success: #34d399;
+      --border: rgba(255,255,255,0.14);
+      --shadow: 0 20px 50px rgba(0,0,0,0.35);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(139,92,246,0.25), transparent 28%),
+        radial-gradient(circle at top right, rgba(34,211,238,0.18), transparent 24%),
+        linear-gradient(180deg, #0b1020 0%, #11182f 45%, #0b1020 100%);
+      line-height: 1.65;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      padding: 72px 0 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card {
+      position: relative;
+      padding: 42px;
+      border-radius: 32px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.11), rgba(255,255,255,0.05));
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(139,92,246,0.16);
+      color: #ddd6fe;
+      font-size: 0.92rem;
+      letter-spacing: 0.03em;
+      margin-bottom: 18px;
+      border: 1px solid rgba(139,92,246,0.28);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.3rem, 5vw, 4.3rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+
+    .hero p {
+      max-width: 780px;
+      font-size: 1.08rem;
+      color: var(--muted);
+      margin: 18px 0 0;
+    }
+
+    .quick-stats {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.35rem;
+      margin-bottom: 6px;
+    }
+
+    .toolbar {
+      margin: 26px 0 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .pill {
+      text-decoration: none;
+      color: var(--text);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      transition: transform 0.18s ease, background 0.18s ease;
+    }
+
+    .pill:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.12);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 22px;
+      align-items: start;
+      margin-bottom: 44px;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 18px;
+      padding: 18px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar h3 {
+      margin: 0 0 14px;
+      font-size: 1.1rem;
+    }
+
+    .sidebar a {
+      display: block;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 10px 12px;
+      border-radius: 14px;
+      transition: all 0.18s ease;
+      font-size: 0.96rem;
+    }
+
+    .sidebar a:hover {
+      color: var(--text);
+      background: rgba(255,255,255,0.08);
+      transform: translateX(4px);
+    }
+
+    .content {
+      display: grid;
+      gap: 22px;
+    }
+
+    .section {
+      border-radius: 28px;
+      padding: 26px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.05));
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .section h2 {
+      margin: 0 0 8px;
+      font-size: 1.7rem;
+      letter-spacing: -0.02em;
+    }
+
+    .section > .lead {
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .subgrid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .card {
+      border-radius: 22px;
+      padding: 18px 18px 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .card h4 {
+      margin: 0 0 8px;
+      font-size: 1.08rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 30px;
+      height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 10px 22px rgba(34,211,238,0.2);
+    }
+
+    .meta {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .meta div {
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .meta strong {
+      display: inline-block;
+      color: #ffffff;
+      margin-right: 6px;
+    }
+
+    code.inline {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 2px 8px;
+      border-radius: 999px;
+      color: #c4b5fd;
+      font-size: 0.92em;
+    }
+
+    pre {
+      margin: 12px 0 0;
+      padding: 16px;
+      border-radius: 18px;
+      background: #09111f;
+      color: #dbeafe;
+      overflow-x: auto;
+      border: 1px solid rgba(255,255,255,0.09);
+    }
+
+    .footer-note {
+      text-align: center;
+      color: var(--muted);
+      padding: 10px 0 40px;
+      font-size: 0.95rem;
+    }
+
+    .highlight {
+      color: #fde68a;
+      font-weight: 600;
+    }
+
+    @media (max-width: 980px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        position: static;
+      }
+      .hero-card {
+        padding: 28px;
+      }
+      .section {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <div class="hero-card">
+        <div class="eyebrow">🧠 Pattern-Based DSA Mastery</div>
+        <h1>DSA Pattern Atlas ✨</h1>
+        <p>
+          A clean, interview-focused classification of the most important DSA patterns and their sub-patterns.
+          Each sub-pattern tells you <span class="highlight">when to use it</span>, <span class="highlight">how it works</span>,
+          and what kind of problem it usually solves.
+        </p>
+
+        <div class="quick-stats">
+          <div class="stat"><strong>18</strong>Core Pattern Families</div>
+          <div class="stat"><strong>70+</strong>Sub-patterns Explained</div>
+          <div class="stat"><strong>90%</strong>Interview Coverage</div>
+          <div class="stat"><strong>FAANG</strong>Ready Structure</div>
+        </div>
+
+        <div class="toolbar">
+          <a class="pill" href="#sliding-window">Sliding Window</a>
+          <a class="pill" href="#two-pointers">Two Pointers</a>
+          <a class="pill" href="#binary-search">Binary Search</a>
+          <a class="pill" href="#dp">Dynamic Programming</a>
+          <a class="pill" href="#graphs">Graphs</a>
+          <a class="pill" href="#heaps">Heaps</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container grid">
+    <aside class="sidebar">
+      <h3>📚 Pattern Index</h3>
+      <a href="#sliding-window">1. Sliding Window</a>
+      <a href="#two-pointers">2. Two Pointers</a>
+      <a href="#prefix-sum">3. Prefix Sum</a>
+      <a href="#hashing">4. Hashing</a>
+      <a href="#binary-search">5. Binary Search</a>
+      <a href="#sorting">6. Sorting Based</a>
+      <a href="#greedy">7. Greedy</a>
+      <a href="#stack">8. Stack / Monotonic Stack</a>
+      <a href="#queue">9. Queue / Deque</a>
+      <a href="#linked-list">10. Linked List</a>
+      <a href="#tree-traversal">11. Tree Traversal</a>
+      <a href="#tree-dfs">12. Tree DFS</a>
+      <a href="#graphs">13. Graphs</a>
+      <a href="#shortest-path">14. Shortest Path</a>
+      <a href="#union-find">15. Union Find</a>
+      <a href="#backtracking">16. Backtracking</a>
+      <a href="#dp">17. Dynamic Programming</a>
+      <a href="#heaps">18. Heap / Priority Queue</a>
+    </aside>
+
+    <section class="content">
+      <article class="section" id="sliding-window">
+        <h2>1️⃣ Sliding Window</h2>
+        <p class="lead">Use this when the problem talks about a <strong>contiguous subarray or substring</strong> and you want to avoid recomputing things for every range.</p>
+        <div class="subgrid">
+          <div class="card">
+            <h4><span class="badge">1.1</span> Fixed Sliding Window</h4>
+            <div class="meta">
+              <div><strong>When to use:</strong> Window size is fixed at <code class="inline">k</code>.</div>
+              <div><strong>Main idea:</strong> Add the new right element and remove the old left element as the window moves.</div>
+              <div><strong>Typical problems:</strong> Maximum sum of size k, average of size k, count negatives in every window.</div>
+            </div>
+            <pre>sum += arr[right]
+if (right - left + 1 &gt; k) {
+  sum -= arr[left]
+  left++
+}</pre>
+          </div>
+
+          <div class="card">
+            <h4><span class="badge">1.2</span> Dynamic / Variable Window</h4>
+            <div class="meta">
+              <div><strong>When to use:</strong> Window size is not fixed; it changes based on a condition.</div>
+              <div><strong>Main idea:</strong> Expand right until condition breaks, then shrink left until valid again.</div>
+              <div><strong>Typical problems:</strong> Longest substring without repeating characters, longest subarray with sum ≤ k.</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4><span class="badge">1.3</span> At Most K Window</h4>
+            <div class="meta">
+              <div><strong>When to use:</strong> Problem says <em>at most k distinct</em>, <em>at most k odd numbers</em>, <em>at most k replacements</em>.</div>
+              <div><strong>Main idea:</strong> Maintain a valid window that never exceeds the allowed count.</div>
+              <div><strong>Typical problems:</strong> Longest substring with at most k distinct characters.</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4><span class="badge">1.4</span> Exactly K Window</h4>
+            <div class="meta">
+              <div><strong>When to use:</strong> Problem asks for exactly k distinct/countable constraint.</div>
+              <div><strong>Main idea:</strong> Usually solve using <code class="inline">atMost(k) - atMost(k - 1)</code>.</div>
+              <div><strong>Typical problems:</strong> Subarrays with exactly k distinct integers.</div>
+            </div>
+            <pre>exactly(k) = atMost(k) - atMost(k - 1)</pre>
+          </div>
+
+          <div class="card">
+            <h4><span class="badge">1.5</span> Minimum Window Pattern</h4>
+            <div class="meta">
+              <div><strong>When to use:</strong> Find the <em>smallest valid</em> window satisfying some requirement.</div>
+              <div><strong>Main idea:</strong> Expand until valid, then shrink as much as possible while preserving validity.</div>
+              <div><strong>Typical problems:</strong> Minimum window substring.</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4><span class="badge">1.6</span> Window with Frequency Map</h4>
+            <div class="meta">
+              <div><strong>When to use:</strong> Window validity depends on character/number frequencies.</div>
+              <div><strong>Main idea:</strong> Use a map or array to track counts inside the current window.</div>
+              <div><strong>Typical problems:</strong> Find anagrams, character replacement, permutation in string.</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="section" id="two-pointers">
+        <h2>2️⃣ Two Pointers</h2>
+        <p class="lead">Use this when two indices can move in a coordinated way to reduce time from O(n²) to O(n).</p>
+        <div class="subgrid">
+          <div class="card"><h4><span class="badge">2.1</span> Opposite Direction Pointers</h4><div class="meta"><div><strong>When to use:</strong> Usually on sorted arrays or when choosing from both ends.</div><div><strong>Main idea:</strong> One pointer starts left, the other right; move based on comparison.</div><div><strong>Typical problems:</strong> Two Sum II, container with most water, trapping decisions from both ends.</div></div></div>
+          <div class="card"><h4><span class="badge">2.2</span> Same Direction Pointers</h4><div class="meta"><div><strong>When to use:</strong> Compacting, filtering, removing duplicates, partitioning arrays.</div><div><strong>Main idea:</strong> One pointer scans, the other marks where to write the next valid item.</div><div><strong>Typical problems:</strong> Remove duplicates, move zeros, remove element in-place.</div></div></div>
+          <div class="card"><h4><span class="badge">2.3</span> Slow & Fast Pointer</h4><div class="meta"><div><strong>When to use:</strong> Linked lists or cycle-like progression problems.</div><div><strong>Main idea:</strong> One pointer moves 1 step, the other 2 steps.</div><div><strong>Typical problems:</strong> Detect cycle, find middle of linked list, happy number.</div></div></div>
+          <div class="card"><h4><span class="badge">2.4</span> Partition Pattern</h4><div class="meta"><div><strong>When to use:</strong> Reorder items around a pivot or category.</div><div><strong>Main idea:</strong> Push matching elements to one side and others to the opposite side.</div><div><strong>Typical problems:</strong> Dutch national flag, quicksort partition.</div></div></div>
+          <div class="card"><h4><span class="badge">2.5</span> Meeting Point Technique</h4><div class="meta"><div><strong>When to use:</strong> Need to know whether two traversals eventually meet.</div><div><strong>Main idea:</strong> If there is a loop or convergence, differently moving pointers will collide.</div><div><strong>Typical problems:</strong> Linked list cycle entry.</div></div></div>
+        </div>
+      </article>
+
+      <article class="section" id="prefix-sum">
+        <h2>3️⃣ Prefix Sum / Difference Array</h2>
+        <p class="lead">Use this when you repeatedly need information about a range, such as a subarray sum or number of occurrences.</p>
+        <div class="subgrid">
+          <div class="card"><h4><span class="badge">3.1</span> Basic Prefix Sum</h4><div class="meta"><div><strong>When to use:</strong> Many range sum queries on an array.</div><div><strong>Main idea:</strong> Store cumulative sums so any range can be answered in O(1).</div><div><strong>Formula:</strong> <code class="inline">sum(l..r) = prefix[r] - prefix[l - 1]</code></div></div></div>
+          <div class="card"><h4><span class="badge">3.2</span> Prefix Sum + HashMap</h4><div class="meta"><div><strong>When to use:</strong> Need to detect if some earlier prefix makes current range satisfy a target.</div><div><strong>Main idea:</strong> If current prefix is <code class="inline">p</code>, check whether <code class="inline">p - target</code> existed before.</div><div><strong>Typical problems:</strong> Subarray sum equals k, longest subarray with sum k.</div></div></div>
+          <div class="card"><h4><span class="badge">3.3</span> 2D Prefix Sum</h4><div class="meta"><div><strong>When to use:</strong> Matrix range sum queries.</div><div><strong>Main idea:</strong> Precompute cumulative area sums to answer submatrix queries in O(1).</div><div><strong>Typical problems:</strong> Sum of rectangle in matrix.</div></div></div>
+          <div class="card"><h4><span class="badge">3.4</span> Difference Array</h4><div class="meta"><div><strong>When to use:</strong> Many range updates, then final reconstruction.</div><div><strong>Main idea:</strong> Mark only where an update starts and ends, then take prefix sum at the end.</div><div><strong>Typical problems:</strong> Increment all values in ranges efficiently.</div></div></div>
+          <div class="card"><h4><span class="badge">3.5</span> Prefix XOR</h4><div class="meta"><div><strong>When to use:</strong> XOR range queries or XOR identity tricks.</div><div><strong>Main idea:</strong> Similar to prefix sum, but with XOR operation.</div><div><strong>Typical problems:</strong> XOR of subarrays, finding odd-frequency properties.</div></div></div>
+        </div>
+      </article>
+
+      <article class="section" id="hashing">
+        <h2>4️⃣ Hashing / Frequency Map</h2>
+        <p class="lead">Use hashing when you need fast lookup, counting, deduplication, or grouping.</p>
+        <div class="subgrid">
+          <div class="card"><h4><span class="badge">4.1</span> Frequency Counting</h4><div class="meta"><div><strong>When to use:</strong> Need counts of values or characters.</div><div><strong>Main idea:</strong> Store occurrences in a map/array.</div><div><strong>Typical problems:</strong> Majority element, valid anagram, first unique character.</div></div></div>
+          <div class="card"><h4><span class="badge">4.2</span> Complement Lookup</h4><div class="meta"><div><strong>When to use:</strong> For each value, you want to know if its matching partner exists.</div><div><strong>Main idea:</strong> Store seen values so the needed complement can be checked in O(1).</div><div><strong>Typical problems:</strong> Two Sum.</div></div></div>
+          <div class="card"><h4><span class="badge">4.3</span> Grouping by Signature</h4><div class="meta"><div><strong>When to use:</strong> Need to group elements by some normalized key.</div><div><strong>Main idea:</strong> Compute a signature and map it to a list.</div><div><strong>Typical problems:</strong> Group anagrams.</div></div></div>
+          <div class="card"><h4><span class="badge">4.4</span> Set-Based Deduplication</h4><div class="meta"><div><strong>When to use:</strong> Only presence matters, not count.</div><div><strong>Main idea:</strong> Use a set to track what has been seen.</div><div><strong>Typical problems:</strong> Longest consecutive sequence.</div></div></div>
+        </div>
+      </article>
+
+      <article class="section" id="binary-search">
+        <h2>5️⃣ Binary Search</h2>
+        <p class="lead">Use binary search whenever the answer space is <strong>sorted</strong> or the condition is <strong>monotonic</strong>.</p>
+        <div class="subgrid">
+          <div class="card"><h4><span class="badge">5.1</span> Classic Binary Search</h4><div class="meta"><div><strong>When to use:</strong> Search for a target in a sorted array.</div><div><strong>Main idea:</strong> Compare middle element and discard half the space each step.</div></div></div>
+          <div class="card"><h4><span class="badge">5.2</span> First / Last Occurrence</h4><div class="meta"><div><strong>When to use:</strong> Duplicates exist and boundary position matters.</div><div><strong>Main idea:</strong> Continue searching left or right even after finding target.</div><div><strong>Typical problems:</strong> Count of occurrences, search range.</div></div></div>
+          <div class="card"><h4><span class="badge">5.3</span> Lower Bound / Upper Bound</h4><div class="meta"><div><strong>When to use:</strong> Need first element ≥ x or &gt; x.</div><div><strong>Main idea:</strong> Search for the first position where a condition becomes true.</div></div></div>
+          <div class="card"><h4><span class="badge">5.4</span> Binary Search on Answer</h4><div class="meta"><div><strong>When to use:</strong> Answer is not in the array but can be tested by a monotonic feasibility check.</div><div><strong>Main idea:</strong> Guess an answer, check if it works, then move left/right.</div><div><strong>Typical problems:</strong> Koko eating bananas, allocate books, ship packages within D days.</div></div></div>
+          <div class="card"><h4><span class="badge">5.5</span> Rotated Array Search</h4><div class="meta"><div><strong>When to use:</strong> Sorted array rotated at some pivot.</div><div><strong>Main idea:</strong> One half is always sorted; decide whether target lies there.</div></div></div>
+          <div class="card"><h4><span class="badge">5.6</span> Peak Finding</h4><div class="meta"><div><strong>When to use:</strong> Need a local maximum/minimum in a structured array.</div><div><strong>Main idea:</strong> Compare middle with neighbor to know which direction contains a peak.</div></div></div>
+        </div>
+      </article>
+
+      <article class="section" id="sorting">
+        <h2>6️⃣ Sorting-Based Patterns</h2>
+        <p class="lead">Sorting is often the transformation step that makes the real pattern easy.</p>
+        <div class="subgrid">
+          <div class="card"><h4><span class="badge">6.1</span> Interval Merging</h4><div class="meta"><div><strong>When to use:</strong> Intervals overlap and need consolidation.</div><div><strong>Main idea:</strong> Sort by start time, then merge current interval with previous if overlapping.</div><div><strong>Typical problems:</strong> Merge intervals, insert interval.</div></div></div>
+          <div class="card"><h4><span class="badge">6.2</span> Sweep Line</h4><div class="meta"><div><strong>When to use:</strong> Events occur over time or coordinate line.</div><div><strong>Main idea:</strong> Convert intervals into start/end events, sort events, process running state.</div><div><strong>Typical problems:</strong> Meeting rooms, skyline ideas, maximum overlap.</div></div></div>
+          <div class="card"><h4><span class="badge">6.3</span> Greedy After Sorting</h4><div class="meta"><div><strong>When to use:</strong> Best choice becomes obvious after ordering.</div><div><strong>Main idea:</strong> Sort, then greedily take valid items.</div><div><strong>Typical problems:</strong> Activity selection, non-overlapping intervals.</div></div></div>
+          <div class="card"><h4><span class="badge">6.4</span> Custom Comparator Sorting</h4><div class="meta"><div><strong>When to use:</strong> Default numeric/alphabetic order is not enough.</div><div><strong>Main idea:</strong> Define a comparison rule that matches the problem goal.</div><div><strong>Typical problems:</strong> Largest number, sort by frequency.</div></div></div>
+        </div>
+      </article>
+
+      <article class="section" id="greedy">
+        <h2>7️⃣ Greedy Pattern</h2>
+        <p class="lead">Use greedy when a local optimal choice safely leads to a global optimal answer.</p>
+        <div class="subgrid">
+          <div class="card"><h4><span class="badge">7.1</span> Interval Scheduling</h4><div class="meta"><div><strong>When to use:</strong> Need maximum number of non-overlapping intervals.</div><div><strong>Main idea:</strong> Sort by ending time and keep choosing the earliest finishing valid interval.</div></div></div>
+          <div class="card"><h4><span class="badge">7.2</span> Activity Selection</h4><div class="meta"><div><strong>When to use:</strong> Same family as scheduling problems.</div><div><strong>Main idea:</strong> Earliest finish usually leaves maximum room for later choices.</div></div></div>
+          <div class="card"><h4><span class="badge">7.3</span> Greedy with Heap</h4><div class="meta"><div><strong>When to use:</strong> Greedy choice must be dynamically revised among candidates.</div><div><strong>Main idea:</strong> Push candidates into heap and always extract the currently best one.</div><div><strong>Typical problems:</strong> Minimum refueling stops, schedule course.</div></div></div>
+          <div class="card"><h4><span class="badge">7.4</span> Greedy with Sorting</h4><div class="meta"><div><strong>When to use:</strong> Need an ordering before making local decisions.</div><div><strong>Main idea:</strong> Sort items, then choose based on current best payoff.</div></div></div>
+        </div>
+      </article>
+
+      <article class="section" id="stack">
+        <h2>8️⃣ Stack / Monotonic Stack</h2>
+        <p class="lead">Use stacks when the problem wants the nearest valid element to the left/right, nesting validation, or controlled reversal of decisions.</p>
+        <div class="subgrid">
+          <div class="card"><h4><span class="badge">8.1</span> Basic Stack</h4><div class="meta"><div><strong>When to use:</strong> Matching, undoing, nested structure validation.</div><div><strong>Main idea:</strong> Last-in, first-out processing.</div><div><strong>Typical problems:</strong> Valid parentheses, simplify path.</div></div></div>
+          <div class="card"><h4><span class="badge">8.2</span> Monotonic Increasing Stack</h4><div class="meta"><div><strong>When to use:</strong> Need nearest smaller element or increasing structure.</div><div><strong>Main idea:</strong> Keep stack in increasing order; pop until order restored.</div><div><strong>Typical problems:</strong> Next smaller element.</div></div></div>
+          <div class="card"><h4><span class="badge">8.3</span> Monotonic Decreasing Stack</h4><div class="meta"><div><strong>When to use:</strong> Need nearest greater element.</div><div><strong>Main idea:</strong> Keep stack in decreasing order.</div><div><strong>Typical problems:</strong> Next greater element, daily temperatures.</div></div></div>
+          <div class="card"><h4><span class="badge">8.4</span> Histogram / Span Pattern</h4><div class="meta"><div><strong>When to use:</strong> Need width expansion controlled by nearest smaller values.</div><div><strong>Main idea:</strong> Use monotonic stack to find previous and next smaller boundaries.</div><div><strong>Typical problems:</strong> Largest rectangle in histogram, maximal rectangle.</div></div></div>
+        </div>
+      </article>
+
+      <article class="section" id="queue">
+        <h2>9️⃣ Queue / Deque / Monotonic Queue</h2>
+        <p class="lead">Use queues for level-based processing, and deques when you need window min/max efficiently.</p>
+        <div class="subgrid">
+          <div class="card"><h4><span class="badge">9.1</span> BFS Queue</h4><div class="meta"><div><strong>When to use:</strong> Level-by-level traversal in graphs/trees.</div><div><strong>Main idea:</strong> Process nodes in the same discovery distance together.</div><div><strong>Typical problems:</strong> Level order traversal, shortest path in unweighted graph.</div></div></div>
+          <div class="card"><h4><span class="badge">9.2</span> Monotonic Deque</h4><div class="meta"><div><strong>When to use:</strong> Need max/min of current window in O(1).</div><div><strong>Main idea:</strong> Remove weaker candidates from the back; front always holds best answer.</div><div><strong>Typical problems:</strong> Sliding window maximum.</div></div></div>
+          <div class="card"><h4><span class="badge">9.3</span> Deque Optimization</h4><div class="meta"><div><strong>When to use:</strong> Push/pop needed at both ends with order maintenance.</div><div><strong>Main idea:</strong> Deque acts like a queue + stack hybrid.</div></div></div>
+        </div>
+      </article>
+
+      <article class="section" id="linked-list">
+        <h2>🔟 Linked List Patterns</h2>
+        <p class="lead">Linked list problems mostly revolve around pointer manipulation and edge-case safety.</p>
+        <div class="subgrid">
+          <div class="card"><h4><span class="badge">10.1</span> Reverse Linked List</h4><div class="meta"><div><strong>When to use:</strong> Need reversed order of nodes.</div><div><strong>Main idea:</strong> Redirect <code class="inline">next</code> pointers one by one.</div></div></div>
+          <div class="card"><h4><span class="badge">10.2</span> Fast & Slow Pointer</h4><div class="meta"><div><strong>When to use:</strong> Need middle or cycle detection.</div><div><strong>Main idea:</strong> Different pointer speeds reveal structure.</div></div></div>
+          <div class="card"><h4><span class="badge">10.3</span> Merge Lists</h4><div class="meta"><div><strong>When to use:</strong> Combine sorted linked lists.</div><div><strong>Main idea:</strong> Repeatedly attach smaller current node.</div></div></div>
+          <div class="card"><h4><span class="badge">10.4</span> Dummy Node Pattern</h4><div class="meta"><div><strong>When to use:</strong> Head insertion/deletion causes many corner cases.</div><div><strong>Main idea:</strong> Add a fake starting node to simplify pointer logic.</div></div></div>
+          <div class="card"><h4><span class="badge">10.5</span> Reverse in Groups / Segments</h4><div class="meta"><div><strong>When to use:</strong> Reverse every k nodes or a partial segment.</div><div><strong>Main idea:</strong> Cut, reverse locally, reconnect carefully.</div></div></div>
+        </div>
+      </article>
+
+      <article class="section" id="tree-traversal">
+        <h2>1️⃣1️⃣ Tree Traversal</h2>
+        <p class="lead">Traversal tells you the order in which the tree should be processed.</p>
+        <div class="subgrid">
+          <div class="card"><h4><span class="badge">11.1</span> DFS Traversals</h4><div class="meta"><div><strong>Preorder:</strong> Process node before children.</div><div><strong>Inorder:</strong> Left → node → right; useful for BST sorted order.</div><div><strong>Postorder:</strong> Process children before node; useful when answer depends on children.</div></div></div>
+          <div class="card"><h4><span class="badge">11.2</span> BFS / Level Order</h4><div class="meta"><div><strong>When to use:</strong> Problem asks level by level, minimum depth, nearest node, etc.</div><div><strong>Main idea:</strong> Use queue and process one level at a time.</div></div></div>
+          <div class="card"><h4><span class="badge">11.3</span> Zigzag Traversal</h4><div class="meta"><div><strong>When to use:</strong> Need alternating direction at each level.</div><div><strong>Main idea:</strong> BFS plus reverse/order control per level.</div></div></div>
+          <div class="card"><h4><span class="badge">11.4</span> Vertical / Boundary Views</h4><div class="meta"><div><strong>When to use:</strong> Problem groups nodes by geometric relation.</div><div><strong>Main idea:</strong> Track horizontal distance or boundary rules.</div></div></div>
+        </div>
+      </article>
+
+      <article class="section" id="tree-dfs">
+        <h2>1️⃣2️⃣ Tree DFS Problem Patterns</h2>
+        <p class="lead">These are not just traversals — they are recurring DFS-style ways of thinking on trees.</p>
+        <div class="subgrid">
+          <div class="card"><h4><span class="badge">12.1</span> Path-Based DFS</h4><div class="meta"><div><strong>When to use:</strong> Need root-to-leaf or any path property.</div><div><strong>Main idea:</strong> Carry current path sum/string/vector through recursion.</div><div><strong>Typical problems:</strong> Path sum, binary tree paths.</div></div></div>
+          <div class="card"><h4><span class="badge">12.2</span> Height / Depth Calculation</h4><div class="meta"><div><strong>When to use:</strong> Tree depth, balance, longest root-based chain.</div><div><strong>Main idea:</strong> Return height from child, combine at parent.</div></div></div>
+          <div class="card"><h4><span class="badge">12.3</span> Diameter Pattern</h4><div class="meta"><div><strong>When to use:</strong> Need longest path through a node.</div><div><strong>Main idea:</strong> Use left height + right height while computing heights.</div></div></div>
+          <div class="card"><h4><span class="badge">12.4</span> Subtree Aggregation</h4><div class="meta"><div><strong>When to use:</strong> Node answer depends on combined child information.</div><div><strong>Main idea:</strong> Return subtree sum/count/state upward.</div><div><strong>Typical problems:</strong> Sum tree, count good nodes, subtree averages.</div></div></div>
+          <div class="card"><h4><span class="badge">12.5</span> Backtracking on Tree</h4><div class="meta"><div><strong>When to use:</strong> Need to choose and undo state while moving through branches.</div><div><strong>Main idea:</strong> Add state before recursion, remove state after recursion.</div></div></div>
+        </div>
+      </article>
+
+      <article class="section" id="graphs">
+        <h2>1️⃣3️⃣ Graph Patterns</h2>
+        <p class="lead">Graph questions often reduce to traversal, connectivity, ordering, or component detection.</p>
+        <div class="subgrid">
+          <div class="card"><h4><span class="badge">13.1</span> Graph DFS</h4><div class="meta"><div><strong>When to use:</strong> Explore connected structure deeply.</div><div><strong>Main idea:</strong> Visit node, recursively visit unvisited neighbors.</div><div><strong>Typical problems:</strong> Number of islands, connected components.</div></div></div>
+          <div class="card"><h4><span class="badge">13.2</span> Graph BFS</h4><div class="meta"><div><strong>When to use:</strong> Need shortest steps in unweighted graph.</div><div><strong>Main idea:</strong> Traverse by layers of distance.</div><div><strong>Typical problems:</strong> Word ladder, shortest path in binary matrix.</div></div></div>
+          <div class="card"><h4><span class="badge">13.3</span> Multi-Source BFS</h4><div class="meta"><div><strong>When to use:</strong> Multiple starting points spread influence simultaneously.</div><div><strong>Main idea:</strong> Push all starting sources into queue first.</div><div><strong>Typical problems:</strong> Rotten oranges, nearest zero in matrix.</div></div></div>
+          <div class="card"><h4><span class="badge">13.4</span> Topological Sort</h4><div class="meta"><div><strong>When to use:</strong> Directed acyclic graph with dependency ordering.</div><div><strong>Main idea:</strong> Use indegree + queue or DFS finishing order.</div><div><strong>Typical problems:</strong> Course schedule II, alien dictionary.</div></div></div>
+          <div class="card"><h4><span class="badge">13.5</span> Cycle Detection</h4><div class="meta"><div><strong>When to use:</strong> Need to know whether a loop exists.</div><div><strong>Main idea:</strong> Undirected: parent-aware DFS/BFS. Directed: recursion stack or indegree logic.</div></div></div>
+        </div>
+      </article>
+
+      <article class="section" id="shortest-path">
+        <h2>1️⃣4️⃣ Shortest Path Patterns</h2>
+        <p class="lead">Pick the algorithm based on edge weights and graph size.</p>
+        <div class="subgrid">
+          <div class="card"><h4><span class="badge">14.1</span> Dijkstra</h4><div class="meta"><div><strong>When to use:</strong> Weighted graph with non-negative edges.</div><div><strong>Main idea:</strong> Repeatedly finalize the currently shortest reachable node using a min-heap.</div></div></div>
+          <div class="card"><h4><span class="badge">14.2</span> Bellman-Ford</h4><div class="meta"><div><strong>When to use:</strong> Negative edges may exist.</div><div><strong>Main idea:</strong> Relax all edges up to V-1 times; can detect negative cycles.</div></div></div>
+          <div class="card"><h4><span class="badge">14.3</span> Floyd-Warshall</h4><div class="meta"><div><strong>When to use:</strong> Need all-pairs shortest path on small dense graph.</div><div><strong>Main idea:</strong> Try every node as an intermediate connector.</div></div></div>
+          <div class="card"><h4><span class="badge">14.4</span> 0-1 BFS</h4><div class="meta"><div><strong>When to use:</strong> Edge weights are only 0 or 1.</div><div><strong>Main idea:</strong> Use deque; weight 0 edges go to front, weight 1 edges go to back.</div></div></div>
+        </div>
+      </article>
+
+      <article class="section" id="union-find">
+        <h2>1️⃣5️⃣ Union Find / Disjoint Set</h2>
+        <p class="lead">Use DSU when the question is about connectivity, merging groups, or checking whether two nodes belong to the same component.</p>
+        <div class="subgrid">
+          <div class="card"><h4><span class="badge">15.1</span> Basic Connectivity</h4><div class="meta"><div><strong>When to use:</strong> Need fast merge and same-group query.</div><div><strong>Main idea:</strong> Each group has a representative parent.</div></div></div>
+          <div class="card"><h4><span class="badge">15.2</span> Path Compression</h4><div class="meta"><div><strong>When to use:</strong> Optimization inside DSU.</div><div><strong>Main idea:</strong> During find, attach nodes directly to root for future speed.</div></div></div>
+          <div class="card"><h4><span class="badge">15.3</span> Union by Rank / Size</h4><div class="meta"><div><strong>When to use:</strong> Optimization inside DSU.</div><div><strong>Main idea:</strong> Attach smaller tree under larger one to keep depth low.</div></div></div>
+          <div class="card"><h4><span class="badge">15.4</span> Dynamic Connectivity</h4><div class="meta"><div><strong>When to use:</strong> Edges are added gradually and connectivity changes over time.</div><div><strong>Main idea:</strong> Union on every new connection, query whenever needed.</div></div></div>
+        </div>
+      </article>
+
+      <article class="section" id="backtracking">
+        <h2>1️⃣6️⃣ Backtracking</h2>
+        <p class="lead">Use this when you must explore choices, recurse into each, then undo and try the next one.</p>
+        <div class="subgrid">
+          <div class="card"><h4><span class="badge">16.1</span> Subsets Pattern</h4><div class="meta"><div><strong>When to use:</strong> Every element can be taken or skipped.</div><div><strong>Main idea:</strong> Binary choice at each index.</div></div></div>
+          <div class="card"><h4><span class="badge">16.2</span> Combinations Pattern</h4><div class="meta"><div><strong>When to use:</strong> Need to choose k elements or combinations without order.</div><div><strong>Main idea:</strong> Choose next candidate starting from current index.</div></div></div>
+          <div class="card"><h4><span class="badge">16.3</span> Permutations Pattern</h4><div class="meta"><div><strong>When to use:</strong> Order matters.</div><div><strong>Main idea:</strong> Try every unused element in current position.</div></div></div>
+          <div class="card"><h4><span class="badge">16.4</span> Constraint Placement</h4><div class="meta"><div><strong>When to use:</strong> Items must be placed while satisfying rules.</div><div><strong>Main idea:</strong> Place only if valid, recurse, then remove.</div><div><strong>Typical problems:</strong> N-Queens, sudoku solver.</div></div></div>
+          <div class="card"><h4><span class="badge">16.5</span> DFS on Board with Undo</h4><div class="meta"><div><strong>When to use:</strong> Grid search where each path has temporary visited state.</div><div><strong>Main idea:</strong> Mark visited, recurse neighbors, unmark on return.</div><div><strong>Typical problems:</strong> Word search.</div></div></div>
+        </div>
+      </article>
+
+      <article class="section" id="dp">
+        <h2>1️⃣7️⃣ Dynamic Programming</h2>
+        <p class="lead">Use DP when the problem has <strong>overlapping subproblems</strong> and <strong>optimal substructure</strong>.</p>
+        <div class="subgrid">
+          <div class="card"><h4><span class="badge">17.1</span> 1D DP</h4><div class="meta"><div><strong>When to use:</strong> State depends on one index and a few previous states.</div><div><strong>Main idea:</strong> Build answer left to right.</div><div><strong>Typical problems:</strong> Fibonacci, climbing stairs, house robber.</div></div></div>
+          <div class="card"><h4><span class="badge">17.2</span> 2D DP</h4><div class="meta"><div><strong>When to use:</strong> State depends on two dimensions like row/col or i/j.</div><div><strong>Main idea:</strong> Fill DP table based on smaller states.</div><div><strong>Typical problems:</strong> Unique paths, LCS.</div></div></div>
+          <div class="card"><h4><span class="badge">17.3</span> Knapsack Pattern</h4><div class="meta"><div><strong>When to use:</strong> Choose/pick items under capacity or target constraint.</div><div><strong>Main idea:</strong> For each item, pick or skip.</div><div><strong>Typical problems:</strong> 0/1 knapsack, partition equal subset sum, target sum.</div></div></div>
+          <div class="card"><h4><span class="badge">17.4</span> Longest Subsequence DP</h4><div class="meta"><div><strong>When to use:</strong> Need longest valid ordered structure, not necessarily contiguous.</div><div><strong>Main idea:</strong> State often means best answer ending at position i.</div><div><strong>Typical problems:</strong> LIS, LCS.</div></div></div>
+          <div class="card"><h4><span class="badge">17.5</span> Interval DP</h4><div class="meta"><div><strong>When to use:</strong> Problem is naturally defined on subarray ranges.</div><div><strong>Main idea:</strong> Compute answer for smaller intervals, then expand.</div><div><strong>Typical problems:</strong> Matrix chain multiplication, burst balloons, palindrome partitioning.</div></div></div>
+          <div class="card"><h4><span class="badge">17.6</span> DP on Trees</h4><div class="meta"><div><strong>When to use:</strong> Each node has decision states that depend on children.</div><div><strong>Main idea:</strong> Return multiple values from child to parent.</div><div><strong>Typical problems:</strong> House robber III.</div></div></div>
+          <div class="card"><h4><span class="badge">17.7</span> Bitmask DP</h4><div class="meta"><div><strong>When to use:</strong> State is a subset and n is small (often ≤ 20).</div><div><strong>Main idea:</strong> Use bits to represent selected/unselected items.</div><div><strong>Typical problems:</strong> TSP variants, assignment problems.</div></div></div>
+        </div>
+      </article>
+
+      <article class="section" id="heaps">
+        <h2>1️⃣8️⃣ Heap / Priority Queue</h2>
+        <p class="lead">Use heaps when you repeatedly need the smallest/largest/current best element.</p>
+        <div class="subgrid">
+          <div class="card"><h4><span class="badge">18.1</span> Top K Elements</h4><div class="meta"><div><strong>When to use:</strong> Need k best items instead of full sorting.</div><div><strong>Main idea:</strong> Maintain heap of size k.</div><div><strong>Typical problems:</strong> Top k frequent elements.</div></div></div>
+          <div class="card"><h4><span class="badge">18.2</span> Kth Smallest / Largest</h4><div class="meta"><div><strong>When to use:</strong> Need one ranked element.</div><div><strong>Main idea:</strong> Use min-heap or max-heap based on viewpoint.</div></div></div>
+          <div class="card"><h4><span class="badge">18.3</span> Merge K Sorted Structures</h4><div class="meta"><div><strong>When to use:</strong> Many sorted lists/arrays must be merged.</div><div><strong>Main idea:</strong> Heap stores current smallest candidate from each source.</div><div><strong>Typical problems:</strong> Merge k sorted lists, smallest range covering elements from k lists.</div></div></div>
+          <div class="card"><h4><span class="badge">18.4</span> Two-Heap Partition</h4><div class="meta"><div><strong>When to use:</strong> Need median or balanced split of data stream.</div><div><strong>Main idea:</strong> Max-heap keeps smaller half, min-heap keeps larger half.</div><div><strong>Typical problems:</strong> Find median from data stream.</div></div></div>
+          <div class="card"><h4><span class="badge">18.5</span> Priority Scheduling</h4><div class="meta"><div><strong>When to use:</strong> Current next best job/event must be picked repeatedly.</div><div><strong>Main idea:</strong> Heap orders tasks by priority, deadline, or start time.</div><div><strong>Typical problems:</strong> Meeting rooms II, task scheduler variants.</div></div></div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <div class="container footer-note">
+    Built as a beautiful pattern-first reference for interview prep 🚀<br />
+    Best way to use it: identify the problem type → match the sub-pattern → recall the standard logic.
+  </div>
+</body>
+</html>
